@@ -1,0 +1,17 @@
+{
+    "siteUrl" : "https://url.of.your.site",
+    "sessionKeepAlive" : "30 (In Minutes)",
+	"listen": [
+		{
+			"ip": "127.0.0.1",
+			"ports": [
+				"8080"
+			]
+		}
+	],
+	"db": {
+		"path" : "jdbc:mysql://localhost/db_name?serverTimezone=UTC",
+		"username" : "db_user_name",
+		"password" : "db_password"
+	}
+}
