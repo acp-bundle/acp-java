@@ -35,10 +35,8 @@ public class AcpSession {
 		if ((session.getAttribute("userLocation") == null) || (session.getAttribute("userId") == null)) {
 			thisUser = null;
 		} else {
-			@SuppressWarnings("boxing")
-			int location = (Integer) session.getAttribute("userLocation");
-			@SuppressWarnings("boxing")
-			int id = (Integer) session.getAttribute("userId");
+			int location = ((Integer) session.getAttribute("userLocation")).intValue();
+			int id = ((Integer) session.getAttribute("userId")).intValue();
 			thisUser = User.getUserByLocationId(dbCon, location, id);
 		}
 	}
