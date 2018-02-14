@@ -45,8 +45,9 @@ public abstract class AbstractCachedQueryConnection {
 			newParams.put(p.getId(), p.getName());
 		}
 
+		String data = "";
 		try {
-			String data = HttpRequestUtil.httpPostRequestAsString(scriptLocation, newParams);
+			data = HttpRequestUtil.httpPostRequestAsString(scriptLocation, newParams);
 
 			JSONObject jData = new JSONObject(data);
 
@@ -59,7 +60,8 @@ public abstract class AbstractCachedQueryConnection {
 
 			return jData;
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "cannot request data from remote script location", e);
+			logger.log(Level.SEVERE, "cannot request data from remote script location: " + e.getMessage());
+			logger.log(Level.SEVERE, "received: " + data);
 			return new JSONObject();
 		}
 	}

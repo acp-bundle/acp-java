@@ -78,7 +78,6 @@ public class OAuth2Helper {
 			b.addParameter(OAUTH_DATA_KEY_CLIENT_ID, oAuth2Data.clientId);
 			b.addParameter(OAUTH_DATA_KEY_REDIRECT_URI,
 					acpSiteUrl + "/" + OAuth2.LOCATION + "." + OAuth2.FUNCTION_NAME_CALLBACK);
-			b.addParameter(OAUTH_DATA_KEY_CLIENT_SECRET, oAuth2Data.clientSecret);
 			b.addParameter("response_type", "code");
 
 			return new FunctionResult(FunctionResult.Status.NONE, b);

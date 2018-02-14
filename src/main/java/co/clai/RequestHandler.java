@@ -89,7 +89,7 @@ public class RequestHandler extends AbstractHandler {
 				mimeType = MIME_TYPE_TEXT_JAVASCRIPT;
 			}
 
-			logger.log(Level.INFO, "loading resource: " + s + " with mime type" + mimeType);
+			logger.log(Level.INFO, "loading resource: " + s + " with mime type " + mimeType);
 
 			staticContent.put(urlOfResource, new StaticContent(ResourceUtil.getResourceAsByteArr("/" + s), mimeType));
 		}
