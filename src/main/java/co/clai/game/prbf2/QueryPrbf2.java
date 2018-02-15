@@ -35,7 +35,9 @@ public class QueryPrbf2 {
 			if (adminGroupSetting != null) {
 				Map<String, String> userRoleMap = new HashMap<>();
 
-				JSONArray locationArr = new JSONArray(new String(adminGroupSetting.getData()));
+				String adminSettingData = new String(adminGroupSetting.getData());
+
+				JSONArray locationArr = new JSONArray(adminSettingData);
 
 				for (int i = 0; i < locationArr.length(); i++) {
 					JSONObject locationConfig = locationArr.getJSONObject(i);
