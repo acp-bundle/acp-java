@@ -53,6 +53,7 @@ public class Prbf2 extends AbstractGame {
 	public static final String CONFIG_KEY_SV_PASSWORD = "sv_password";
 	public static final String CONFIG_KEY_SV_WELCOMEMESSAGE = "sv_welcomeMessage";
 	public static final String CONFIG_KEY_SV_LOGO_URL = "sv_LogoURL";
+	public static final String CONFIG_KEY_SV_MAX_PLAYERS = "sv_maxPlayers";
 
 	public static final String CONFIG_KEY_ADMIN_GROUPS = "admin_groups";
 	public static final String CONFIG_KEY_SMB_EXCLUDE_LIST = "smb_excludeList";
@@ -83,6 +84,7 @@ public class Prbf2 extends AbstractGame {
 		retMap.put(CONFIG_KEY_SV_PASSWORD, "Password");
 		retMap.put(CONFIG_KEY_SV_WELCOMEMESSAGE, "Welcome message");
 		retMap.put(CONFIG_KEY_SV_LOGO_URL, "logo url");
+		retMap.put(CONFIG_KEY_SV_MAX_PLAYERS, "maximum player count");
 		retMap.put(CONFIG_KEY_ADMIN_GROUPS, "Admin Usergroups");
 		retMap.put(CONFIG_KEY_SMB_EXCLUDE_LIST, "Smartbalance excluded Clan Tags");
 
@@ -124,6 +126,7 @@ public class Prbf2 extends AbstractGame {
 		case CONFIG_KEY_SV_WELCOMEMESSAGE:
 		case CONFIG_KEY_SV_LOGO_URL:
 		case CONFIG_KEY_SMB_EXCLUDE_LIST:
+		case CONFIG_KEY_SV_MAX_PLAYERS:
 			hasDeleteButton = true;
 			//$FALL-THROUGH$
 		case CONFIG_KEY_IP:
@@ -319,6 +322,8 @@ public class Prbf2 extends AbstractGame {
 			return "29900";
 		case CONFIG_KEY_SMB_EXCLUDE_LIST:
 			return "[\"[R-DEV]*\",\"[R-CON]*\"]";
+		case CONFIG_KEY_SV_MAX_PLAYERS:
+			return "100";
 		default:
 			return "";
 		}
