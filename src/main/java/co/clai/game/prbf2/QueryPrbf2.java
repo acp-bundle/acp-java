@@ -35,7 +35,9 @@ public class QueryPrbf2 {
 			if (adminGroupSetting != null) {
 				Map<String, String> userRoleMap = new HashMap<>();
 
-				JSONArray locationArr = new JSONArray(new String(adminGroupSetting.getData()));
+				String adminSettingData = new String(adminGroupSetting.getData());
+
+				JSONArray locationArr = new JSONArray(adminSettingData);
 
 				for (int i = 0; i < locationArr.length(); i++) {
 					JSONObject locationConfig = locationArr.getJSONObject(i);
@@ -139,6 +141,7 @@ public class QueryPrbf2 {
 			appendSettingIfExists(dbCon, sb, server, "sv.sponsorText \"", "\"\n", Prbf2.CONFIG_KEY_SV_WELCOMEMESSAGE);
 			appendSettingIfExists(dbCon, sb, server, "sv.sponsorLogoURL \"", "\"\n", Prbf2.CONFIG_KEY_SV_LOGO_URL);
 			appendSettingIfExists(dbCon, sb, server, "sv.communityLogoURL \"", "\"\n", Prbf2.CONFIG_KEY_SV_LOGO_URL);
+			appendSettingIfExists(dbCon, sb, server, "sv.maxPlayers ", "\n", Prbf2.CONFIG_KEY_SV_MAX_PLAYERS);
 
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "error occured while trying to fetch remote Admin access from config, serverid="

@@ -262,7 +262,6 @@ public class XenforoConnection extends AbstractRemoteConnection {
 
 	@Override
 	public List<Integer> getUserIdsFromUserGroup(int userGroupId) {
-		logger.log(Level.WARNING, "no collabId specified when trying to get UserField Content");
 
 		JSONObject userGroupsData = requestCachedJSONData(remoteScript,
 				Arrays.asList(new StringStringPair("action", "ips_query"),
@@ -295,7 +294,7 @@ public class XenforoConnection extends AbstractRemoteConnection {
 						new StringStringPair("userId", userId + ""), new StringStringPair("fieldId", fieldId)),
 				generalHttpRequestCache);
 
-		if (!fieldContentData.has(fieldId) || fieldContentData.isNull(fieldId)) {
+		if (!fieldContentData.has("field_value") || fieldContentData.isNull("field_value")) {
 			return null;
 		}
 

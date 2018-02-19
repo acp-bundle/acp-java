@@ -87,7 +87,7 @@ public class MainHttpListener {
 
 		reqHandler = new RequestHandler(this.dbCon, this);
 
-		server = new Server(new QueuedThreadPool(1024, 1));
+		server = new Server(new QueuedThreadPool(2048, 1));
 
 		siteUrl = config.getString(JSON_VARNAME_SITE_URL);
 

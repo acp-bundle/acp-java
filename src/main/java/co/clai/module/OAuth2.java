@@ -10,6 +10,8 @@ import co.clai.AcpSession;
 import co.clai.access.AccessibleHelper;
 import co.clai.db.DatabaseConnector;
 import co.clai.db.model.Location;
+import co.clai.html.AbstractRenderer;
+import co.clai.html.Builder;
 import co.clai.remote.AbstractRemoteConnection;
 import co.clai.remote.OAuth2Helper;
 
@@ -27,8 +29,14 @@ public class OAuth2 extends AbstractModule {
 
 	@Override
 	protected byte[] invokePlain(AcpSession s, Map<String, String[]> parameters) {
-		// TODO Auto-generated method stub
-		return "".getBytes();
+		// nothing to see here. This module should not be invoked without any function
+		AbstractRenderer r = new AbstractRenderer("") {
+			@Override
+			public void write(Builder b) {
+				appendData(b.finish());
+			}};
+		r.writeLink(Index.INDEX_LOCATION, "return to main page");
+		return r.finish().getBytes();
 	}
 
 	@Override
