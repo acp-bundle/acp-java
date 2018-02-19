@@ -309,11 +309,11 @@ public class Prbf2 extends AbstractGame {
 	public String getDefaultOption(String settingKey) {
 		switch (settingKey) {
 		case CONFIG_KEY_ADMIN_GROUPS:
-			return "[\n" + "{\n" + "    \"location\" : \"<location id>\",\n" + "    \"field_id\" : \"<field id>\",\n"
-					+ "    \"groups\" : [\n" + "        {\n" + "            \"role\" : \"<role 1>\",\n"
-					+ "            \"groups\" : \"<groups 1>\"\n" + "        },\n" + "        {\n"
-					+ "            \"role\" : \"<role 2>\",\n" + "            \"groups\" : \"<groups 2>\"\n"
-					+ "        }\n" + "}\n" + "]";
+			return "[\n" + "{\n" + "    \"location\" : \"<location id>\",\n    \"field_id\" : \"<field id>\",\n"
+					+ "    \"groups\" : [\n        {\n            \"role\" : \"<role 1>\",\n"
+					+ "            \"groups\" : \"<groups 1>\"\n        },\n        {\n"
+					+ "            \"role\" : \"<role 2>\",\n            \"groups\" : \"<groups 2>\"\n"
+					+ "        }\n}\n]";
 		case CONFIG_KEY_SV_ADMIN_SCRIPT:
 			return "prism";
 		case CONFIG_KEY_PORT:
