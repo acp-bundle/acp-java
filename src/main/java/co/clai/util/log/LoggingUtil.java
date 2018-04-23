@@ -1,8 +1,11 @@
 package co.clai.util.log;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
@@ -23,6 +26,30 @@ public class LoggingUtil {
 	}
 
 	private static boolean isSetup = false;
+	
+	private static List<ConsoleHandler> consoleHandlers = new ArrayList<>();
+	private static Map<String, ConsoleHandler> moduleConsoleHandlers = new HashMap<>();
+	private static boolean useConsoleOutput = true;
+	
+	public static void disableConsoleOutput() {
+		useConsoleOutput = false;
+		if (consoleHandlers != null) {
+			for (ConsoleHandler handler : consoleHandlers) {
+				Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+				
+				logger.removeHandler(handler);
+			}
+			consoleHandlers = null;
+		}
+		if (moduleConsoleHandlers != null) {
+			for (Entry<String, ConsoleHandler> e : moduleConsoleHandlers.entrySet()) {
+				Logger l = Logger.getLogger("module-" + e.getKey(), null);
+				
+				l.removeHandler(e.getValue());
+			}
+			moduleConsoleHandlers = null;
+		}
+	}
 
 	public static void setup() {
 
@@ -50,9 +77,13 @@ public class LoggingUtil {
 		fileTxt.setFormatter(formatterTxt);
 		logger.addHandler(fileTxt);
 
-		ConsoleHandler hCon = new ConsoleHandler();
-		hCon.setFormatter(new GeneralOutputFormatter());
-		logger.addHandler(hCon);
+		if (useConsoleOutput) {
+			ConsoleHandler hCon = new ConsoleHandler();
+			hCon.setFormatter(new GeneralOutputFormatter());
+			logger.addHandler(hCon);
+			consoleHandlers.add(hCon);
+		}
+
 	}
 
 	public static void createLoggerForModule(Class<? extends AbstractModule> c) {
@@ -75,9 +106,13 @@ public class LoggingUtil {
 			fileHandler.setFormatter(formatter);
 			l.addHandler(fileHandler);
 
-			ConsoleHandler hCon = new ConsoleHandler();
-			hCon.setFormatter(new GeneralOutputFormatter());
-			l.addHandler(hCon);
+			if (useConsoleOutput) {
+				ConsoleHandler hCon = new ConsoleHandler();
+				hCon.setFormatter(new GeneralOutputFormatter());
+				l.addHandler(hCon);
+				consoleHandlers.add(hCon);
+				moduleConsoleHandlers.put(c.getName(), hCon);
+			}
 
 			Logger l1 = Logger.getLogger("user-log-module-" + c.getName(), null);
 			l1.setLevel(Level.FINE);

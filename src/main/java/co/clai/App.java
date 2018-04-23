@@ -21,6 +21,7 @@ import co.clai.util.log.LoggingUtil;
 public class App {
 
 	private static final String RESOURCE_LOCATION_CONFIG_JSON = "config.json";
+	private static final String DISABLE_CONSOLE_LOGGING = "disable_cout";
 	private static final byte[] DEFAULT_CONFIG_CONTENT = ResourceUtil
 			.getResourceAsByteArr("/" + RESOURCE_LOCATION_CONFIG_JSON);
 
@@ -68,6 +69,13 @@ public class App {
 
 			JSONObject config = new JSONObject(FileUtil.getFileContentAsString(args[0]));
 
+			if (config.has(DISABLE_CONSOLE_LOGGING)) {
+				if (config.getString(DISABLE_CONSOLE_LOGGING).equals("true")) {
+					logger.log(Level.WARNING, "disabling console output");
+					LoggingUtil.disableConsoleOutput();
+				}
+			}
+			
 			MainHttpListener l = new MainHttpListener(config);
 
 			l.run();
