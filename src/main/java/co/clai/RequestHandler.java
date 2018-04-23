@@ -22,6 +22,7 @@ import co.clai.db.DatabaseConnector;
 import co.clai.module.AbstractModule;
 import co.clai.module.Index;
 import co.clai.module.ModuleUtil;
+import co.clai.util.FileUtil;
 import co.clai.util.ResourceUtil;
 import co.clai.util.log.LoggingUtil;
 
@@ -92,6 +93,22 @@ public class RequestHandler extends AbstractHandler {
 			logger.log(Level.INFO, "loading resource: " + s + " with mime type " + mimeType);
 
 			staticContent.put(urlOfResource, new StaticContent(ResourceUtil.getResourceAsByteArr("/" + s), mimeType));
+		}
+
+		for (String s : ResourceUtil.getResourceInFilepath("static")) {
+			String urlOfResource = s.replace("static/", "");
+			String mimeType = MIME_TYPE_TEXT_TEXT;
+			if (s.endsWith(".ico")) {
+				mimeType = MIME_TYPE_IMAGE_X_ICON;
+			} else if (s.endsWith(".css")) {
+				mimeType = MIME_TYPE_TEXT_CSS;
+			} else if (s.endsWith(".js")) {
+				mimeType = MIME_TYPE_TEXT_JAVASCRIPT;
+			}
+
+			logger.log(Level.INFO, "loading resource from file system: " + s + " with mime type " + mimeType);
+
+			staticContent.put(urlOfResource, new StaticContent(FileUtil.getFileAsByteArr(s), mimeType));
 		}
 	}
 
