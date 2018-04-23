@@ -25,3 +25,6 @@ and connect with your webbrowser to the correct port.
 
 ## suggested setup
 The ACP does not support any https by itself. I highly suggest to put it behind an apache or nginx proxy. Make sure that the proxy sets the `X-Real-IP` header correctly to make use of IP based access. Those headers are only obeyed when binding the server to `127.0.0.1`.
+
+## disable console logging
+Add `"disable_cout" : "true"` into the `config.json`.
