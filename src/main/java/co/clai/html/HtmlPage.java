@@ -170,7 +170,7 @@ public class HtmlPage implements Builder {
 
 		sb.append((footer == null)
 				? ("Powered by <a href=\"https://github.com/ClundXIII/acp-java\">acp-java</a>, hosted by "
-				+ Community.getCommunityById(dbCon, communityId).getName())
+						+ Community.getCommunityById(dbCon, communityId).getName())
 				: footer);
 		sb.append(partsContent.get(6)); // After Footer
 		return sb.toString();

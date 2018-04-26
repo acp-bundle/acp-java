@@ -75,7 +75,7 @@ public class App {
 					LoggingUtil.disableConsoleOutput();
 				}
 			}
-			
+
 			MainHttpListener l = new MainHttpListener(config);
 
 			l.run();

@@ -34,7 +34,8 @@ public class OAuth2 extends AbstractModule {
 			@Override
 			public void write(Builder b) {
 				appendData(b.finish());
-			}};
+			}
+		};
 		r.writeLink(Index.INDEX_LOCATION, "return to main page");
 		return r.finish().getBytes();
 	}

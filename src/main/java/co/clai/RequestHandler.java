@@ -96,7 +96,8 @@ public class RequestHandler extends AbstractHandler {
 
 			staticContent.put(urlOfResource, new StaticContent(FileUtil.getFileAsByteArr(s), mimeType));
 			if (urlOfResource.endsWith("index.html")) {
-				staticContent.put(urlOfResource.replace("index.html", ""), new StaticContent(FileUtil.getFileAsByteArr(s), mimeType));
+				staticContent.put(urlOfResource.replace("index.html", ""),
+						new StaticContent(FileUtil.getFileAsByteArr(s), mimeType));
 			}
 		}
 	}
@@ -110,7 +111,7 @@ public class RequestHandler extends AbstractHandler {
 		} else if (filename.endsWith(".js")) {
 			mimeType = MIME_TYPE_TEXT_JAVASCRIPT;
 		} else if (filename.endsWith(".html")) {
-				mimeType = MIME_TYPE_TEXT_HTML_CHARSET_UTF_8;
+			mimeType = MIME_TYPE_TEXT_HTML_CHARSET_UTF_8;
 		}
 		return mimeType;
 	}

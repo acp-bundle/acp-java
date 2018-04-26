@@ -36,7 +36,7 @@ public class XenforoConnection extends AbstractRemoteConnection {
 	private final OAuth2Data oAuth2Data;
 
 	private final Cache<JSONObject> generalHttpRequestCache;
-	
+
 	private final JSONObject data;
 
 	public XenforoConnection(Location l) {
@@ -114,7 +114,8 @@ public class XenforoConnection extends AbstractRemoteConnection {
 
 		List<Integer> userGroupList = getUsergroupsFromUserId(userId);
 
-		return new RemoteUserData(userId, userData.getString("username"), userGroupList, userData.getString("email"), "", "");
+		return new RemoteUserData(userId, userData.getString("username"), userGroupList, userData.getString("email"),
+				"", "");
 	}
 
 	@Override
@@ -134,7 +135,6 @@ public class XenforoConnection extends AbstractRemoteConnection {
 						new StringStringPair("method", "getUserGroupsFromUserId"),
 						new StringStringPair("userId", id + "")),
 				generalHttpRequestCache);
-
 
 		if (!userGroupsData.has("ids")) {
 			return retList;
@@ -159,11 +159,11 @@ public class XenforoConnection extends AbstractRemoteConnection {
 				generalHttpRequestCache);
 
 		int userId = Integer.parseInt(userData.getString("id"));
-		
+
 		List<Integer> userGroupList = getUsergroupsFromUserId(userId);
 
-		return new RemoteUserData(userId, userData.getString("name"), userGroupList, userData.getString("email"),
-				"", "");
+		return new RemoteUserData(userId, userData.getString("name"), userGroupList, userData.getString("email"), "",
+				"");
 	}
 
 	@Override
@@ -174,11 +174,11 @@ public class XenforoConnection extends AbstractRemoteConnection {
 						new StringStringPair("method", "getUserGroupNameById"),
 						new StringStringPair("groupId", userGroupId + "")),
 				generalHttpRequestCache);
-	
+
 		if (!userGroupsData.has("title")) {
 			return "Unknown Usergroup";
 		}
-	
+
 		return userGroupsData.getString("title");
 	}
 
@@ -206,18 +206,19 @@ public class XenforoConnection extends AbstractRemoteConnection {
 	public User getUserWithOAuth2Code(DatabaseConnector dbCon, Map<String, String[]> parameters, int locationId) {
 		try {
 			final String siteUrl = dbCon.getListener().getSiteUrl();
-			
+
 			logger.log(Level.INFO, oAuth2Data.accessTokenUrl.toString());
-			
-			final Map<String, String> buildTokenRequest = OAuth2Helper.buildTokenRequest(siteUrl, parameters.get("code")[0], oAuth2Data);
+
+			final Map<String, String> buildTokenRequest = OAuth2Helper.buildTokenRequest(siteUrl,
+					parameters.get("code")[0], oAuth2Data);
 
 			logger.log(Level.INFO, buildTokenRequest.toString());
-			
+
 			String tokenRequestData = HttpRequestUtil.httpPostRequestAsString(oAuth2Data.accessTokenUrl,
 					buildTokenRequest);
 
 			logger.log(Level.INFO, tokenRequestData);
-			
+
 			JSONObject jTokenData = new JSONObject(tokenRequestData);
 
 			String token = jTokenData.getString(OAuth2Helper.OAUTH_DATA_KEY_ACCESS_TOKEN);
@@ -229,11 +230,11 @@ public class XenforoConnection extends AbstractRemoteConnection {
 			logger.log(Level.INFO, userRequestData);
 
 			JSONObject jUserData = new JSONObject(userRequestData);
-			
+
 			if (!jUserData.has("links")) {
 				return null;
 			}
-			
+
 			RemoteUserData userdata = getUserDataByUserId(userId);
 
 			return new User(dbCon, userdata.getUsername(), userId, locationId,
@@ -253,11 +254,11 @@ public class XenforoConnection extends AbstractRemoteConnection {
 				generalHttpRequestCache);
 
 		int userId = Integer.parseInt(userData.getString("id"));
-		
+
 		List<Integer> userGroupList = getUsergroupsFromUserId(userId);
 
-		return new RemoteUserData(userId, userData.getString("name"), userGroupList, userData.getString("email"),
-				"", "");
+		return new RemoteUserData(userId, userData.getString("name"), userGroupList, userData.getString("email"), "",
+				"");
 	}
 
 	@Override

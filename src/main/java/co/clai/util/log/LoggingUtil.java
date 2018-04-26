@@ -26,17 +26,17 @@ public class LoggingUtil {
 	}
 
 	private static boolean isSetup = false;
-	
+
 	private static List<ConsoleHandler> consoleHandlers = new ArrayList<>();
 	private static Map<String, ConsoleHandler> moduleConsoleHandlers = new HashMap<>();
 	private static boolean useConsoleOutput = true;
-	
+
 	public static void disableConsoleOutput() {
 		useConsoleOutput = false;
 		if (consoleHandlers != null) {
 			for (ConsoleHandler handler : consoleHandlers) {
 				Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-				
+
 				logger.removeHandler(handler);
 			}
 			consoleHandlers = null;
@@ -44,7 +44,7 @@ public class LoggingUtil {
 		if (moduleConsoleHandlers != null) {
 			for (Entry<String, ConsoleHandler> e : moduleConsoleHandlers.entrySet()) {
 				Logger l = Logger.getLogger("module-" + e.getKey(), null);
-				
+
 				l.removeHandler(e.getValue());
 			}
 			moduleConsoleHandlers = null;
