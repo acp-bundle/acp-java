@@ -24,14 +24,11 @@ public class LocalFileSystemStorage extends AbstractStorage {
 	// Date : Identifier
 	private final Cache<List<DateIdPair>> dataCache;
 
-	private final Storage storage;
 	private final String path;
 
 	private final String storageKey;
 
 	public LocalFileSystemStorage(Storage storage) {
-
-		this.storage = storage;
 
 		if (storage == null) {
 			storageKey = null;
@@ -128,15 +125,35 @@ public class LocalFileSystemStorage extends AbstractStorage {
 
 	@Override
 	public List<StorageSearchEntry> searchForEntries(DatabaseConnector dbCon, String searchQuery) {
-		// TODO Auto-generated method stub
-		return null;
+		List<ValueValuePair> pairList = getFileList(dbCon);
+		List<StorageSearchEntry> retList = new ArrayList<>();
+
+		for (ValueValuePair pair : pairList) {
+
+			byte[] data = getData(pair.getId());
+
+			if (data != null) {
+				retList.addAll(getSearchResult(pair.getId(), pair.getName(), searchQuery, new String(data)));
+			} else {
+				logger.log(Level.WARNING, "file with id=\"" + pair.getId() + "\" does not exist!");
+			}
+		}
+
+		return retList;
 	}
 
 	@Override
 	public List<StorageSearchEntry> searchForEntries(DatabaseConnector dbCon, String searchQuery, Date start,
 			Date end) {
-		// TODO Auto-generated method stub
-		return null;
+		List<ValueValuePair> pairList = getFileListByDate(dbCon, start, end);
+		List<StorageSearchEntry> retList = new ArrayList<>();
+
+		for (ValueValuePair pair : pairList) {
+			retList.addAll(
+					getSearchResult(pair.getId(), pair.getName(), searchQuery, new String(getData(pair.getId()))));
+		}
+
+		return retList;
 	}
 
 	@Override
