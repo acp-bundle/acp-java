@@ -42,6 +42,10 @@ public class StringUtil {
 		return ret == 0;
 	}
 
+	public static boolean isValidFilename(String toTest) {
+		return toTest.matches("[a-zA-Z0-9.,_]*");
+	}
+
 	public static boolean containsOnlyNumbersAndLetters(String toTest) {
 		return toTest.matches("[a-zA-Z0-9]*");
 	}

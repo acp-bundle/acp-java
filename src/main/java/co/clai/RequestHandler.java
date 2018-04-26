@@ -81,35 +81,38 @@ public class RequestHandler extends AbstractHandler {
 		logger.log(Level.INFO, "loading resources:");
 		for (String s : ResourceUtil.getResourceInClasspath("static")) {
 			String urlOfResource = s.replace("static/", "");
-			String mimeType = MIME_TYPE_TEXT_TEXT;
-			if (s.endsWith(".ico")) {
-				mimeType = MIME_TYPE_IMAGE_X_ICON;
-			} else if (s.endsWith(".css")) {
-				mimeType = MIME_TYPE_TEXT_CSS;
-			} else if (s.endsWith(".js")) {
-				mimeType = MIME_TYPE_TEXT_JAVASCRIPT;
-			}
+			String mimeType = getMemetype(s);
 
-			logger.log(Level.INFO, "loading resource: " + s + " with mime type " + mimeType);
+			logger.log(Level.INFO, "loading resource: " + s + " with meme type " + mimeType);
 
 			staticContent.put(urlOfResource, new StaticContent(ResourceUtil.getResourceAsByteArr("/" + s), mimeType));
 		}
 
 		for (String s : ResourceUtil.getResourceInFilepath("static")) {
 			String urlOfResource = s.replace("static/", "");
-			String mimeType = MIME_TYPE_TEXT_TEXT;
-			if (s.endsWith(".ico")) {
-				mimeType = MIME_TYPE_IMAGE_X_ICON;
-			} else if (s.endsWith(".css")) {
-				mimeType = MIME_TYPE_TEXT_CSS;
-			} else if (s.endsWith(".js")) {
-				mimeType = MIME_TYPE_TEXT_JAVASCRIPT;
-			}
+			String mimeType = getMemetype(s);
 
-			logger.log(Level.INFO, "loading resource from file system: " + s + " with mime type " + mimeType);
+			logger.log(Level.INFO, "loading resource from file system: " + s + " with meme type " + mimeType);
 
 			staticContent.put(urlOfResource, new StaticContent(FileUtil.getFileAsByteArr(s), mimeType));
+			if (urlOfResource.endsWith("index.html")) {
+				staticContent.put(urlOfResource.replace("index.html", ""), new StaticContent(FileUtil.getFileAsByteArr(s), mimeType));
+			}
 		}
+	}
+
+	private static String getMemetype(String filename) {
+		String mimeType = MIME_TYPE_TEXT_TEXT;
+		if (filename.endsWith(".ico")) {
+			mimeType = MIME_TYPE_IMAGE_X_ICON;
+		} else if (filename.endsWith(".css")) {
+			mimeType = MIME_TYPE_TEXT_CSS;
+		} else if (filename.endsWith(".js")) {
+			mimeType = MIME_TYPE_TEXT_JAVASCRIPT;
+		} else if (filename.endsWith(".html")) {
+				mimeType = MIME_TYPE_TEXT_HTML_CHARSET_UTF_8;
+		}
+		return mimeType;
 	}
 
 	@Override
