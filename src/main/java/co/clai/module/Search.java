@@ -297,8 +297,7 @@ public class Search extends AbstractModule {
 
 				fileList.startBody();
 
-				for (ValueValuePair f : abStor.getFileListByDate(dbCon, new Date(0L),
-						new Date(System.currentTimeMillis()))) {
+				for (ValueValuePair f : abStor.getFileList(dbCon)) {
 					HtmlTableRow row = fileList.new HtmlTableRow();
 
 					row.writeText(f.getId());

@@ -1,7 +1,14 @@
 package co.clai.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,5 +86,12 @@ public class ResourceUtil {
 		}
 
 		return subDirFiles;
+	}
+
+	public static FileTime getCreationTime(File file) throws IOException {
+		Path p = Paths.get(file.getAbsolutePath());
+		BasicFileAttributes view = Files.getFileAttributeView(p, BasicFileAttributeView.class).readAttributes();
+		FileTime fileTime = view.creationTime();
+		return fileTime;
 	}
 }
