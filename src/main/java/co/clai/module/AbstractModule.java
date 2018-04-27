@@ -50,7 +50,11 @@ public abstract class AbstractModule {
 			Map<String, String[]> parameters) {
 		try {
 			if ((function == null) || function.equals("")) {
-				return invokePlain(s, parameters);
+				byte[] result = invokePlain(s, parameters);
+				if (result == null) {
+					return "invoke plain returns null".getBytes();
+				}
+				return result;
 			}
 
 			StringBuilder logEntry = new StringBuilder();

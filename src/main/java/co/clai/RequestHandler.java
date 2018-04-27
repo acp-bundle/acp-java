@@ -195,7 +195,12 @@ public class RequestHandler extends AbstractHandler {
 				if (targetPath.length >= 2) {
 					function = targetPath[1];
 				}
-				outS.write(invokedModule.invoke(response, s, function, parameterMap));
+
+				byte[] result = invokedModule.invoke(response, s, function, parameterMap);
+				if (result == null) {
+					result = new byte[0];
+				}
+				outS.write(result);
 				outS.flush();
 			} else {
 				PrintWriter responseWriter = new PrintWriter(outS);

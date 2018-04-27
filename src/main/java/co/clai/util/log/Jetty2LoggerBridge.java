@@ -61,7 +61,7 @@ public class Jetty2LoggerBridge extends AbstractLogger {
 
 	@Override
 	public void warn(String msg, Throwable thrown) {
-		logger.log(Level.WARNING, msg, thrown);
+		logger.log(Level.WARNING, msg + " " + thrown.getMessage());
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class Jetty2LoggerBridge extends AbstractLogger {
 
 	@Override
 	public void info(String msg, Throwable thrown) {
-		logger.log(Level.INFO, msg, thrown);
+		logger.log(Level.INFO, msg + " " + thrown.getMessage());
 	}
 
 	@Override
@@ -98,21 +98,18 @@ public class Jetty2LoggerBridge extends AbstractLogger {
 
 	@Override
 	public void debug(Throwable thrown) {
-		debug(thrown.getMessage(), thrown);
+		debug(thrown.getMessage(), thrown.getMessage());
 	}
 
 	@Override
 	public void debug(String msg, Throwable thrown) {
 		if (debugEnabled) {
-			logger.log(Level.FINE, msg, thrown);
+			logger.log(Level.FINE, msg + " " + thrown.getMessage());
 		}
 	}
 
 	@Override
 	public void ignore(Throwable ignored) {
-		logger.log(Level.FINEST, ignored.getMessage());
-		for (StackTraceElement e : ignored.getStackTrace()) {
-			logger.log(Level.FINEST, e.toString());
-		}
+		// ignoring this call
 	}
 }

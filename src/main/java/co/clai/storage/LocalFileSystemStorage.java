@@ -62,8 +62,8 @@ public class LocalFileSystemStorage extends AbstractStorage {
 	@Override
 	public byte[] getData(String identifier) {
 		if (!StringUtil.isValidFilename(identifier)) {
-			logger.log(Level.WARNING, "WARNING: someone tried to get file: \"" + identifier + "\"");
-			return null;
+			logger.log(Level.WARNING, "WARNING: someone tried to get file: \"" + path + "/" + identifier + "\"");
+			return new byte[0];
 		}
 
 		return FileUtil.getFileAsByteArr(path + "/" + identifier);
