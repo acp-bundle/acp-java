@@ -28,3 +28,6 @@ The ACP does not support any https by itself. I highly suggest to put it behind 
 
 ## disable console logging
 Add `"disable_cout" : "true"` into the `config.json`.
+
+## nightly builds (usually stable)
+[https://www.clundxiii.com/acp-nightly.php](https://www.clundxiii.com/acp-nightly.php)
