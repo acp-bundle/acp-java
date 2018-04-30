@@ -82,7 +82,7 @@ public class LocalFileSystemStorage extends AbstractStorage {
 	}
 
 	@SuppressWarnings("static-method")
-	private Date getDateFromFile(File f) {
+	protected Date getDateFromFile(File f) {
 		try {
 			return new Date(ResourceUtil.getCreationTime(f).toMillis());
 		} catch (Exception e) {
