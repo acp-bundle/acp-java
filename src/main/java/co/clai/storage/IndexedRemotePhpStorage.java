@@ -154,4 +154,14 @@ public class IndexedRemotePhpStorage extends AbstractStorage {
 		}
 	}
 
+	@Override
+	public boolean forceDownload() {
+		return false;
+	}
+
+	@Override
+	public boolean isSearchable() {
+		return true;
+	}
+
 }

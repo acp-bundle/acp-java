@@ -13,6 +13,7 @@ import org.reflections.Reflections;
 
 import co.clai.db.DatabaseConnector;
 import co.clai.db.model.Storage;
+import co.clai.html.HtmlPage;
 import co.clai.remote.AbstractCachedQueryConnection;
 import co.clai.util.ValueValuePair;
 
@@ -126,4 +127,12 @@ public abstract class AbstractStorage extends AbstractCachedQueryConnection {
 
 	public abstract void pushIndex(DatabaseConnector dbCon, String identifier, String name, long timestamp,
 			String clientIp);
+
+	public void renderContent(HtmlPage p, String identifier) {
+		p.writePre(new String(getData(identifier)));
+	}
+
+	public abstract boolean forceDownload();
+
+	public abstract boolean isSearchable();
 }

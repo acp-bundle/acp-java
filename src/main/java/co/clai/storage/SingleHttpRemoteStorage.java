@@ -113,4 +113,14 @@ public class SingleHttpRemoteStorage extends AbstractStorage {
 		throw new RuntimeException("operation not supported");
 	}
 
+	@Override
+	public boolean forceDownload() {
+		return false;
+	}
+
+	@Override
+	public boolean isSearchable() {
+		return true;
+	}
+
 }

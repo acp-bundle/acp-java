@@ -303,18 +303,32 @@ public class Search extends AbstractModule {
 					row.writeText(f.getId());
 					row.writeText(f.getName());
 
+					if (!abStor.forceDownload()) {
+						URIBuilder bu;
+						try {
+							bu = new URIBuilder(LOCATION);
+							bu.addParameter(GET_PARAM, GET_PARAM_VALUE_VIEW);
+							bu.addParameter(StorageIndex.DB_TABLE_COLUMN_NAME_STORAGE_ID, stor.getId() + "");
+							bu.addParameter(StorageIndex.DB_TABLE_COLUMN_NAME_IDENTIFIER, f.getId());
+
+							row.writeLink(bu.toString(), "view", true);
+						} catch (Exception e) {
+							logger.log(Level.WARNING, "Error while building view link: " + e.getMessage());
+						}
+					} else {
+						row.writeText("");
+					}
+
 					URIBuilder bu;
 					try {
 						bu = new URIBuilder(LOCATION);
-						bu.addParameter(GET_PARAM, GET_PARAM_VALUE_VIEW);
+						bu.addParameter(GET_PARAM, GET_PARAM_VALUE_DOWNLOAD);
 						bu.addParameter(StorageIndex.DB_TABLE_COLUMN_NAME_STORAGE_ID, stor.getId() + "");
 						bu.addParameter(StorageIndex.DB_TABLE_COLUMN_NAME_IDENTIFIER, f.getId());
 
-						row.writeLink(bu.toString(), "view", true);
+						row.writeLink(bu.toString(), "download", true);
 					} catch (Exception e) {
-						logger.log(Level.WARNING, "Error while building view link: " + e.getMessage());
-
-						e.printStackTrace();
+						logger.log(Level.WARNING, "Error while building download link: " + e.getMessage());
 					}
 
 					fileList.write(row);
@@ -342,7 +356,7 @@ public class Search extends AbstractModule {
 
 			p.writeH2("Content: ");
 
-			p.writePre(new String(AbstractStorage.getRemoteFromLocation(stor).getData(identifier)));
+			AbstractStorage.getRemoteFromLocation(stor).renderContent(p, identifier);
 
 			break;
 		}
@@ -359,6 +373,8 @@ public class Search extends AbstractModule {
 				return "no access".getBytes();
 			}
 
+			s.getResponse().setContentType("application/octet-stream");
+			s.getResponse().addHeader("Content-Disposition", "inline; filename=\"" + identifier + "\"");
 			return AbstractStorage.getRemoteFromLocation(stor).getData(identifier);
 		}
 

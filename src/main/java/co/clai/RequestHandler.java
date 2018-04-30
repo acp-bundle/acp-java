@@ -157,7 +157,7 @@ public class RequestHandler extends AbstractHandler {
 
 		response.setContentType(MIME_TYPE_TEXT_HTML_CHARSET_UTF_8);
 
-		AcpSession s = new AcpSession(dbCon, request);
+		AcpSession s = new AcpSession(dbCon, request, response);
 
 		try (OutputStream outS = response.getOutputStream()) {
 			Map<String, String[]> parameterMap = baseRequest.getParameterMap();

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import co.clai.db.DatabaseConnector;
 import co.clai.db.model.Storage;
+import co.clai.html.HtmlPage;
 import co.clai.util.FileUtil;
 import co.clai.util.ResourceUtil;
 import co.clai.util.StringStringPair;
@@ -159,6 +160,21 @@ public class LocalFileSystemStorage extends AbstractStorage {
 	@Override
 	public void pushIndex(DatabaseConnector dbCon, String identifier, String name, long timestamp, String clientIp) {
 		throw new RuntimeException("Local File System storage cannot be pushed!");
+	}
+
+	@Override
+	public void renderContent(HtmlPage p, String identifier) {
+		p.writePre(new String(getData(identifier)));
+	}
+
+	@Override
+	public boolean forceDownload() {
+		return false;
+	}
+
+	@Override
+	public boolean isSearchable() {
+		return true;
 	}
 
 }

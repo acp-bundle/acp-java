@@ -22,8 +22,8 @@ public class PRBF2LogLocalStorage extends LocalFileSystemStorage {
 			return new Date(System.currentTimeMillis());
 		}
 
-		String dateString = f.getName().replace("chatlog_", "").replaceAll(".txt", "");
-		
+		String dateString = f.getName().replace("chatlog_", "").replace(".txt", "");
+
 		for (SimpleDateFormat format : POSSIBLE_DATE_FORMATS) {
 			try {
 				Date date = format.parse(dateString);
@@ -32,7 +32,7 @@ public class PRBF2LogLocalStorage extends LocalFileSystemStorage {
 				e.getMessage(); // discard
 			}
 		}
-		
+
 		return super.getDateFromFile(f);
 	}
 

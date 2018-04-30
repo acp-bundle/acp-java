@@ -1,6 +1,7 @@
 package co.clai;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import co.clai.db.DatabaseConnector;
@@ -14,11 +15,13 @@ public class AcpSession {
 	private final String clientIp;
 
 	private final String hostname;
+	private final HttpServletResponse response;
 
-	AcpSession(DatabaseConnector dbCon, HttpServletRequest request) {
+	AcpSession(DatabaseConnector dbCon, HttpServletRequest request, HttpServletResponse response) {
 		session = request.getSession();
 		hostname = request.getServerName();
 
+		this.response = response;
 		this.dbCon = dbCon;
 
 		String tmpClientIp = request.getRemoteAddr();
@@ -73,5 +76,9 @@ public class AcpSession {
 
 	public String getHostname() {
 		return hostname;
+	}
+
+	public HttpServletResponse getResponse() {
+		return response;
 	}
 }
