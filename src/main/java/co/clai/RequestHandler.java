@@ -162,13 +162,21 @@ public class RequestHandler extends AbstractHandler {
 		try (OutputStream outS = response.getOutputStream()) {
 			Map<String, String[]> parameterMap = baseRequest.getParameterMap();
 
-			processRequest(response, targetPath, s, outS, parameterMap);
+			try {
+				processRequest(response, targetPath, s, outS, parameterMap);
+			} catch (Exception e) {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				outS.write("Error:<br>".getBytes());
+				String message = e.getMessage();
+				if (message == null) {
+					message = "unknown error";
+					e.printStackTrace();
+				}
+				outS.write(message.getBytes());
+				outS.write("<br><a href='/'>return to main page</a>".getBytes());
+			}
 		} catch (Exception e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Error:<br>");
-			response.getWriter().println(e.getMessage());
-			response.getWriter().println("<a href='/'>return to main page</a>");
-			response.getWriter().flush();
+			logger.log(Level.SEVERE, "Fatal Error during error catching: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -185,7 +193,12 @@ public class RequestHandler extends AbstractHandler {
 			if (s.getThisUser() != null) {
 				hasAccess = s.getThisUser().hasAccess(invokedModule.getAccessibleHelper());
 			} else {
-				hasAccess = invokedModule.getAccessibleHelper().hasAccess(null);
+				try {
+					hasAccess = invokedModule.getAccessibleHelper().hasAccess(null);
+				} catch (Exception e) {
+					e.getMessage(); // discard
+					hasAccess = false;
+				}
 			}
 
 			if (hasAccess) {
