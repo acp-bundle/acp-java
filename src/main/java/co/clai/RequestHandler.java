@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
@@ -218,7 +219,7 @@ public class RequestHandler extends AbstractHandler {
 			} else {
 				PrintWriter responseWriter = new PrintWriter(outS);
 				responseWriter.println("no access");
-				responseWriter.println(targetPath[0] + "<br>");
+				responseWriter.println( StringEscapeUtils.escapeHtml4(targetPath[0]) + "<br>");
 				responseWriter.println("<a href='/'>return to main page</a>");
 				responseWriter.flush();
 			}
