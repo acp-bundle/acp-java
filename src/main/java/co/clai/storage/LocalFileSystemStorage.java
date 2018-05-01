@@ -29,7 +29,11 @@ public class LocalFileSystemStorage extends AbstractStorage {
 
 	private final String storageKey;
 
+	protected final Storage storage;
+
 	public LocalFileSystemStorage(Storage storage) {
+
+		this.storage = storage;
 
 		if (storage == null) {
 			storageKey = null;

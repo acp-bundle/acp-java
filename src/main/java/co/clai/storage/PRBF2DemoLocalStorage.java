@@ -3,10 +3,11 @@ package co.clai.storage;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
 
 import co.clai.db.model.Storage;
 
-public class PRBF2DemoLocalStorage extends LocalFileSystemStorage {// 2017_03_21_20_07_25
+public class PRBF2DemoLocalStorage extends LocalFileSystemStorage {
 	SimpleDateFormat[] POSSIBLE_DATE_FORMATS = new SimpleDateFormat[] { new SimpleDateFormat("yyyy_mm_dd_kk_mm_ss") };
 
 	public PRBF2DemoLocalStorage(Storage storage) {
@@ -15,17 +16,21 @@ public class PRBF2DemoLocalStorage extends LocalFileSystemStorage {// 2017_03_21
 
 	@Override
 	protected Date getDateFromFile(File f) {
-		String dateString = f.getName().replace("auto_", "").replace(".bf2demo", "");
+		try {
+			String dateString = f.getName().replace("auto_", "").replace(".bf2demo", "");
 
-		for (SimpleDateFormat format : POSSIBLE_DATE_FORMATS) {
-			try {
-				Date date = format.parse(dateString);
-				return date;
-			} catch (Exception e) {
-				e.getMessage();
+			for (SimpleDateFormat format : POSSIBLE_DATE_FORMATS) {
+				try {
+					Date date = format.parse(dateString);
+					return date;
+				} catch (Exception e) {
+					e.getMessage();
+				}
 			}
-		}
 
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Error parsing date " + f.getName() + ": " + e.getMessage());
+		}
 		return super.getDateFromFile(f);
 	}
 

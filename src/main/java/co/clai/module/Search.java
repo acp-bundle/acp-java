@@ -42,12 +42,12 @@ public class Search extends AbstractModule {
 	public static final String FUNCTION_NAME_SEARCH_LOGS = "searchLogs";
 	public static final String FUNCTION_NAME_VIEW_FILE = "viewFile";
 
-	private static final String GET_PARAM = "do";
+	public static final String GET_PARAM = "do";
 	private static final String GET_PARAM_VALUE_SEARCH_LOGS = "searchLogs";
 	private static final String GET_PARAM_VALUE_SEARCH_USER = "searchUser";
 	private static final String GET_PARAM_VALUE_LIST = "list";
-	private static final String GET_PARAM_VALUE_VIEW = "view";
-	private static final String GET_PARAM_VALUE_DOWNLOAD = "download";
+	public static final String GET_PARAM_VALUE_VIEW = "view";
+	public static final String GET_PARAM_VALUE_DOWNLOAD = "download";
 
 	public static final String GET_PARAM_SEARCH_FOR = "search_for";
 	private static final String GET_PARAM_SERVER_IDS = "server_ids";
@@ -304,14 +304,9 @@ public class Search extends AbstractModule {
 					row.writeText(f.getName());
 
 					if (!abStor.forceDownload()) {
-						URIBuilder bu;
 						try {
-							bu = new URIBuilder(LOCATION);
-							bu.addParameter(GET_PARAM, GET_PARAM_VALUE_VIEW);
-							bu.addParameter(StorageIndex.DB_TABLE_COLUMN_NAME_STORAGE_ID, stor.getId() + "");
-							bu.addParameter(StorageIndex.DB_TABLE_COLUMN_NAME_IDENTIFIER, f.getId());
-
-							row.writeLink(bu.toString(), "view", true);
+							row.writeLink(abStor.getViewLink(dbCon.getListener().getSiteUrl(), stor.getId(), f.getId()),
+									"view", true);
 						} catch (Exception e) {
 							logger.log(Level.WARNING, "Error while building view link: " + e.getMessage());
 						}

@@ -219,7 +219,7 @@ public class RequestHandler extends AbstractHandler {
 			} else {
 				PrintWriter responseWriter = new PrintWriter(outS);
 				responseWriter.println("no access");
-				responseWriter.println( StringEscapeUtils.escapeHtml4(targetPath[0]) + "<br>");
+				responseWriter.println(StringEscapeUtils.escapeHtml4(targetPath[0]) + "<br>");
 				responseWriter.println("<a href='/'>return to main page</a>");
 				responseWriter.flush();
 			}

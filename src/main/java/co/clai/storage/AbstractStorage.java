@@ -1,6 +1,7 @@
 package co.clai.storage;
 
 import java.lang.reflect.Constructor;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,11 +10,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.reflections.Reflections;
 
 import co.clai.db.DatabaseConnector;
 import co.clai.db.model.Storage;
+import co.clai.db.model.StorageIndex;
 import co.clai.html.HtmlPage;
+import co.clai.module.Search;
 import co.clai.remote.AbstractCachedQueryConnection;
 import co.clai.util.ValueValuePair;
 
@@ -135,4 +139,14 @@ public abstract class AbstractStorage extends AbstractCachedQueryConnection {
 	public abstract boolean forceDownload();
 
 	public abstract boolean isSearchable();
+
+	@SuppressWarnings({ "static-method", "unused" })
+	public String getViewLink(String siteURL, int storageId, String identifier) throws URISyntaxException {
+		URIBuilder bu = new URIBuilder(Search.LOCATION);
+		bu.addParameter(Search.GET_PARAM, Search.GET_PARAM_VALUE_VIEW);
+		bu.addParameter(StorageIndex.DB_TABLE_COLUMN_NAME_STORAGE_ID, storageId + "");
+		bu.addParameter(StorageIndex.DB_TABLE_COLUMN_NAME_IDENTIFIER, identifier);
+
+		return bu.toString();
+	}
 }

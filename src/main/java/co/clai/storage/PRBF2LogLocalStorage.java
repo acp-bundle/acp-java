@@ -2,6 +2,7 @@ package co.clai.storage;
 
 import java.io.File;
 import java.util.Date;
+import java.util.logging.Level;
 
 import co.clai.db.model.Storage;
 
@@ -18,19 +19,23 @@ public class PRBF2LogLocalStorage extends LocalFileSystemStorage {
 
 	@Override
 	protected Date getDateFromFile(File f) {
-		if (f.getName().equals("cdhash.log") || f.getName().equals("ra_adminlog.txt")) {
-			return new Date(System.currentTimeMillis());
-		}
-
-		String dateString = f.getName().replace("chatlog_", "").replace(".txt", "");
-
-		for (SimpleDateFormat format : POSSIBLE_DATE_FORMATS) {
-			try {
-				Date date = format.parse(dateString);
-				return date;
-			} catch (Exception e) {
-				e.getMessage(); // discard
+		try {
+			if (f.getName().equals("cdhash.log") || f.getName().equals("ra_adminlog.txt")) {
+				return new Date(System.currentTimeMillis());
 			}
+
+			String dateString = f.getName().replace("chatlog_", "").replace(".txt", "");
+
+			for (SimpleDateFormat format : POSSIBLE_DATE_FORMATS) {
+				try {
+					Date date = format.parse(dateString);
+					return date;
+				} catch (Exception e) {
+					e.getMessage(); // discard
+				}
+			}
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Error parsing date " + f.getName() + ": " + e.getMessage());
 		}
 
 		return super.getDateFromFile(f);
