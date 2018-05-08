@@ -58,7 +58,7 @@ public class Prbf2 extends AbstractGame {
 	public static final String CONFIG_KEY_ADMIN_GROUPS = "admin_groups";
 	public static final String CONFIG_KEY_SMB_EXCLUDE_LIST = "smb_excludeList";
 
-	public final static String KEY = "pfbf2";
+	public final static String KEY = "prbf2";
 	public final static String NAME = "Project Reality: Battlefield 2";
 
 	private final Logger logger = LoggingUtil.getLoggerFromModule(Query.class);
