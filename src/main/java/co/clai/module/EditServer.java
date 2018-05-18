@@ -54,6 +54,8 @@ public class EditServer extends AbstractModule {
 		List<AbstractGame> tmpList = AbstractGameUtil.getAllGames();
 
 		for (AbstractGame aG : tmpList) {
+			logger.log(Level.INFO,
+					"Adding game with key \"" + aG.getKey() + "\", class \"" + aG.getClass().toString() + "\"");
 			gameMap.put(aG.getKey(), aG);
 		}
 	}

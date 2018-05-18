@@ -29,6 +29,7 @@ public class EditTemplate extends AbstractModule {
 	public static final String FUNCTION_NAME_COPY_TEMPLATE = "copyTemplate";
 	public static final String FUNCTION_NAME_EDIT_TEMPLATE = "editTemplate";
 	public static final String FUNCTION_NAME_DELETE_TEMPLATE = "deleteTemplate";
+	public static final String FUNCTION_NAME_UPDATE_TEMPLATE = "updateTemplate";
 
 	private static final String GET_PARAM = "edit";
 
@@ -43,7 +44,7 @@ public class EditTemplate extends AbstractModule {
 		p.writeH1("Edit Templates");
 
 		HtmlTable ht = new HtmlTable();
-		ht.addHeader(Arrays.asList("ID", "key", "name", "Community", "Edit", "Delete"));
+		ht.addHeader(Arrays.asList("ID", "key", "name", "community", "edit", "delete", "update"));
 		ht.startBody();
 
 		List<Template> allTemplates = Template.getAllTemplates(dbCon);
@@ -182,6 +183,7 @@ public class EditTemplate extends AbstractModule {
 		retMap.put(FUNCTION_NAME_COPY_TEMPLATE, this::copyTemplate);
 		retMap.put(FUNCTION_NAME_EDIT_TEMPLATE, this::editTemplate);
 		retMap.put(FUNCTION_NAME_DELETE_TEMPLATE, this::deleteTemplate);
+		retMap.put(FUNCTION_NAME_UPDATE_TEMPLATE, this::updateTemplate);
 
 		return retMap;
 	}
@@ -279,6 +281,22 @@ public class EditTemplate extends AbstractModule {
 		}
 
 		t.delete(dbCon);
+
+		return new FunctionResult(FunctionResult.Status.OK, LOCATION);
+	}
+
+	private FunctionResult updateTemplate(AcpSession s, Map<String, String[]> parameters) {
+
+		int id = Integer.parseInt(parameters.get(Template.DB_TABLE_COLUMN_NAME_ID)[0]);
+
+		Template t = Template.getTemplateById(dbCon, id);
+
+		if (!s.getThisUser().hasAccess(new AccessibleFunctionHelper(getModuleName(), FUNCTION_NAME_UPDATE_TEMPLATE),
+				t.getAsset())) {
+			return new FunctionResult(FunctionResult.Status.NO_ACCESS, LOCATION);
+		}
+
+		t.updateTemplate(dbCon);
 
 		return new FunctionResult(FunctionResult.Status.OK, LOCATION);
 	}

@@ -35,7 +35,9 @@ public class RequestHandler extends AbstractHandler {
 	private static final String MIME_TYPE_TEXT_CSS = "text/css;charset=utf-8";
 	private static final String MIME_TYPE_TEXT_TEXT = "text/text;charset=utf-8";
 	private static final String MIME_TYPE_TEXT_JAVASCRIPT = "text/javascript";
+	private static final String MIME_TYPE_TEXT_JSON = "application/json;charset=utf-8";
 	private static final String MIME_TYPE_IMAGE_X_ICON = "image/x-icon";
+	private static final String MIME_TYPE_IMAGE_PNG = "image/png";
 
 	private final DatabaseConnector dbCon;
 
@@ -113,6 +115,10 @@ public class RequestHandler extends AbstractHandler {
 			mimeType = MIME_TYPE_TEXT_JAVASCRIPT;
 		} else if (filename.endsWith(".html")) {
 			mimeType = MIME_TYPE_TEXT_HTML_CHARSET_UTF_8;
+		} else if (filename.endsWith(".json")) {
+			mimeType = MIME_TYPE_TEXT_JSON;
+		} else if (filename.endsWith(".png")) {
+			mimeType = MIME_TYPE_IMAGE_PNG;
 		}
 		return mimeType;
 	}

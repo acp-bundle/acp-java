@@ -29,6 +29,8 @@ public class MainHttpListener {
 	public static final String JSON_VARNAME_DB = "db";
 
 	public static final String JSON_VARNAME_SITE_URL = "siteUrl";
+	public static final String JSON_VARNAME_GIT_PATH = "gitPath";
+	private static final String JSON_VARNAME_TEMPLATE_GIT_REPO_PATH = "templateGitRepoPath";
 
 	Logger logger = LoggingUtil.getDefaultLogger();
 
@@ -64,6 +66,8 @@ public class MainHttpListener {
 	private final DatabaseConnector dbCon;
 
 	private final String siteUrl;
+	private final String gitPath;
+	private final String templateGitRepoPath;
 
 	public DatabaseConnector getDbCon() {
 		return dbCon;
@@ -90,6 +94,18 @@ public class MainHttpListener {
 		server = new Server(new QueuedThreadPool(2048, 1));
 
 		siteUrl = config.getString(JSON_VARNAME_SITE_URL);
+
+		if (config.has(JSON_VARNAME_GIT_PATH)) {
+			gitPath = config.getString(JSON_VARNAME_GIT_PATH);
+		} else {
+			gitPath = "/usr/bin/git";
+		}
+
+		if (config.has(JSON_VARNAME_TEMPLATE_GIT_REPO_PATH)) {
+			templateGitRepoPath = config.getString(JSON_VARNAME_TEMPLATE_GIT_REPO_PATH);
+		} else {
+			templateGitRepoPath = "acp-template-files";
+		}
 
 		JSONArray jsonListeners = config.getJSONArray(JSON_VARNAME_LISTEN);
 
@@ -155,6 +171,14 @@ public class MainHttpListener {
 
 	public String getSiteUrl() {
 		return siteUrl;
+	}
+
+	public String getGitPath() {
+		return gitPath;
+	}
+
+	public String getTemplateGitRepoPath() {
+		return templateGitRepoPath;
 	}
 
 }

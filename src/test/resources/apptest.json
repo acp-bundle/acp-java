@@ -13,5 +13,6 @@
 		"path": "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;database_to_upper=false",
 		"username": "",
 		"password": ""
-	}
+	},
+	"templateGitRepoPath": "/tmp/acp-template-files"
 }

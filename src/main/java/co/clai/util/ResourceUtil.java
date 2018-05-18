@@ -67,7 +67,6 @@ public class ResourceUtil {
 	}
 
 	public static List<String> getResourceInFilepath(String filepath) {
-		System.out.println(filepath);
 		File f = new File(filepath);
 
 		if (!f.exists()) {

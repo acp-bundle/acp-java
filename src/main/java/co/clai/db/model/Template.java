@@ -1,10 +1,15 @@
 package co.clai.db.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import co.clai.access.AccessibleHelper;
 import co.clai.access.CommunityAsset;
@@ -12,6 +17,7 @@ import co.clai.access.GeneralAsset;
 import co.clai.db.DatabaseConnector;
 import co.clai.db.DbValue;
 import co.clai.db.DbValueType;
+import co.clai.util.FileUtil;
 import co.clai.util.StringStringPair;
 import co.clai.util.ValueValuePair;
 
@@ -23,6 +29,8 @@ public class Template extends AbstractDbTable {
 	public static final String DB_TABLE_COLUMN_NAME_NAME = "name";
 	public static final String DB_TABLE_COLUMN_NAME_COMMUNITY_ID = "community_id";
 	public static final String DB_TABLE_COLUMN_NAME_DATA = "data";
+
+	private static final String TEMPLATE_GIT_REPO_URL = "https://github.com/acp-bundle/acp-template-files.git";
 
 	private final static Map<String, DbValueType> columnMap = new HashMap<>();
 	{
@@ -148,5 +156,58 @@ public class Template extends AbstractDbTable {
 		}
 
 		return retList;
+	}
+
+	public void updateTemplate(DatabaseConnector dbCon) {
+		final String templateGitRepoPath = dbCon.getListener().getTemplateGitRepoPath();
+
+		File gitRepoFolder = new File(templateGitRepoPath);
+
+		String gitCommand = dbCon.getListener().getGitPath();
+
+		if (!gitRepoFolder.exists()) {
+			logger.log(Level.INFO, "Cloning repository into " + gitRepoFolder.getAbsolutePath());
+			try {
+				Process p = Runtime.getRuntime()
+						.exec(gitCommand + " clone " + TEMPLATE_GIT_REPO_URL + " " + templateGitRepoPath);
+				p.waitFor();
+
+				logger.log(Level.INFO, "Result: " + p.exitValue());
+
+			} catch (Exception e) {
+				logger.log(Level.WARNING, "Error while cloning repository: \"" + e.getMessage() + "\"");
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+
+		try {
+			Runtime.getRuntime().exec(gitCommand + " pull", null, new File(templateGitRepoPath));
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Error while pulling repository: \"" + e.getMessage() + "\"");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
+		String gameKey = "unknown";
+		/// TODO do this properly once #19 is fixed
+		if (key.contains("prbf2")) {
+			gameKey = "prbf2";
+		} else if (key.contains("squad")) {
+			gameKey = "squad";
+		} else {
+			throw new RuntimeException("unknown game");
+		}
+
+		JSONArray templateArr = new JSONArray(
+				FileUtil.getFileContentAsString(templateGitRepoPath + "/" + gameKey + "/data.json"));
+		for (int i = 0; i < templateArr.length(); i++) {
+			JSONObject thisFileData = templateArr.getJSONObject(i);
+			if (thisFileData.getString("key").equals(key)) {
+				edit(dbCon, FileUtil.getFileContentAsString(
+						templateGitRepoPath + "/" + gameKey + "/" + thisFileData.getString("file")));
+				return;
+			}
+		}
 	}
 }
