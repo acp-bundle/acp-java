@@ -79,6 +79,17 @@ public class EditTemplate extends AbstractModule {
 					r.write(deleteForm);
 				}
 
+				if (s.getThisUser().hasAccess(
+						new AccessibleFunctionHelper(getModuleName(), FUNCTION_NAME_UPDATE_TEMPLATE), t.getAsset())) {
+
+					HtmlForm deleteForm = new HtmlForm(LOCATION + "." + FUNCTION_NAME_UPDATE_TEMPLATE,
+							HtmlForm.Method.POST);
+					deleteForm.addHiddenElement(Template.DB_TABLE_COLUMN_NAME_ID, t.getId() + "");
+					deleteForm.addSubmit("Update", HtmlForm.ButtonType.DANGER);
+
+					r.write(deleteForm);
+				}
+
 				ht.write(r);
 			}
 		}
