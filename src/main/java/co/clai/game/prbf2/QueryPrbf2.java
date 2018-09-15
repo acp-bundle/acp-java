@@ -131,6 +131,7 @@ public class QueryPrbf2 {
 				sb.append("sv.serverIP \"" + ipSetting.getDataAsString() + "\"\n");
 			}
 
+			sb.append("sv.internet 1\n");
 			appendSettingIfExists(dbCon, sb, server, "sv.serverPort ", "\n", Prbf2.CONFIG_KEY_PORT);
 			appendSettingIfExists(dbCon, sb, server, "sv.gameSpyPort ", "\n", Prbf2.CONFIG_KEY_QUERY);
 			appendSettingIfExists(dbCon, sb, server, "sv.adminScript \"", "\"\n", Prbf2.CONFIG_KEY_SV_ADMIN_SCRIPT);
